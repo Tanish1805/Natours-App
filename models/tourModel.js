@@ -115,7 +115,7 @@ const tourSchema = new mongoose.Schema(
         address: String,
         description: String,
         // Day of tour at which people will go to this location
-        date: Number,
+        day: Number,
       },
     ],
 
