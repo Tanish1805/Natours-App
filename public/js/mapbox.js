@@ -1,5 +1,5 @@
 // For tour data in our tour.pug we append the tour data to our htm(Basically expose it to the html)
-// From there our js picks up the tour data
+// From there our mapbox.js picks up the tour data
 try {
   const locations = JSON.parse(
     document.getElementById('map').dataset.locations
