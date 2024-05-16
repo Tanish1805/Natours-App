@@ -1,9 +1,10 @@
 extends base
 include _reviewCard
 
+//- This will write all the code at the last of the block head in base pug
 block append head
-  script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
-  link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
+  script(src='https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js')
+  link(href='https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css' rel='stylesheet')
 
 mixin overviewBox(label, text, icon)
   .overview-box__detail
@@ -67,7 +68,7 @@ block content
     each img, i in tour.images
       .picture-box
         img.picture-box__img(src=`/img/tours/${img}`, alt=`The Park Camper Tour ${i + 1}`, class=`picture-box__img--${i + 1}`)
-
+    //- We our simply putting our tour locatioins data in our html so that our mapbox.js can pick it up from here
   section.section-map
     #map(data-locations=`${JSON.stringify(tour.locations)}`)
 
