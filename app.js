@@ -34,6 +34,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set Security HTTP headers
 app.use(helmet());
 
+// Basically, the idea is that there is some policy set in the response header due to app.use(helmet()) that can restrict the sources we can get resources from, which is the CSP (Content-Security-Policy).
+// So below middleware is to allow us the use of mapbox resources
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      workerSrc: ["'self'", 'blob:'],
+      childSrc: ["'self'", 'blob:'],
+      imgSrc: ["'self'", 'data:', 'blob:'],
+      connectSrc: [
+        'https://*.tiles.mapbox.com',
+        'https://api.mapbox.com',
+        'https://events.mapbox.com',
+      ],
+      scriptSrc: ['https://api.mapbox.com', "'self'", 'blob:'],
+    },
+  })
+);
+
 // Development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
