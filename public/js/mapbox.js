@@ -1,10 +1,4 @@
-// For tour data in our tour.pug we append the tour data to our htm(Basically expose it to the html)
-// From there our mapbox.js picks up the tour data
-try {
-  const locations = JSON.parse(
-    document.getElementById('map').dataset.locations
-  );
-
+export const displayMap = (locations) => {
   mapboxgl.accessToken =
     'pk.eyJ1IjoiaXRzLW1lMTgiLCJhIjoiY2x3OWw5NHg4MDFuMDJpcGE3YXhldmEzbyJ9.54mhLHVOImvUmaCsMEpoJQ';
 
@@ -51,6 +45,4 @@ try {
       right: 100,
     },
   });
-} catch (error) {
-  console.error('Error initializing map:', error);
-}
+};

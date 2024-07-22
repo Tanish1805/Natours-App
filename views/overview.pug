@@ -1,10 +1,8 @@
-//- Basically we extend the base and all the things we write in here under block Content also appears in the block content in base.pug 
 extends base
 
 block content
   main.main
     .card-container
-      //- Looping over all tours array data passed in to this pug template(See viewsController) 
       each tour in tours
         .card
           .card__header
