@@ -1,8 +1,70 @@
+const multer = require('multer');
+const sharp = require('sharp');
 const Tour = require('../models/tourModel.js');
 const APIFeatures = require('../utils/apiFeatures.js');
 const catchAsync = require('../utils/catchAsync.js');
 const AppError = require('../utils/appError.js');
 const factory = require('./handlerFactory.js');
+
+// Middleware to upload images to memory or disk storage
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images.', 400), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+// This will allow us to upload mupltiple images for tour images and it will then send these images to next middlewares in req.file
+exports.uploadTourImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 },
+]);
+
+// upload.single('image') req.file
+// Uppload.array is used to upload mulitple files to storage
+// upload.array('images', 5) req.files
+
+// The idea here is to basically use this midlleware beofre updaetTour middleware so that it will attach images to the req.body,then update tour will update the db from the data from the request
+// Using sharp to resize tour images
+exports.resizeTourImages = catchAsync(async (req, res, next) => {
+  if (!req.files.imageCover || !req.files.images) return next();
+
+  // 1) Storing Cover image file name in req.body
+  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+  // When we are storing the imageCiver using the upload, still the imageCover is an array, so we will have to use the first element of the array
+  await sharp(req.files.imageCover[0].buffer)
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/tours/${req.body.imageCover}`);
+
+  // 2) Storing Images file name in req.body
+  req.body.images = [];
+
+  await Promise.all(
+    req.files.images.map(async (file, i) => {
+      const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+
+      await sharp(file.buffer)
+        .resize(2000, 1333)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`public/img/tours/${filename}`);
+
+      req.body.images.push(filename);
+    })
+  );
+
+  next();
+});
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';

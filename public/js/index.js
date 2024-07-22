@@ -31,9 +31,15 @@ if (logOutBtn) logOutBtn.addEventListener('click', logout);
 if (userDataForm)
   userDataForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    updateSettings({ name, email }, 'data');
+    // We are creating form Data so that we can send file objects(images in this case) to the backend
+    const form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    // Selecting the first file, i.e. image
+    form.append('photo', document.getElementById('photo').files[0]);
+
+    // Axios(We ar3e using axios in updateSettings function) will recoognise this form data and treat it as an object only.
+    updateSettings(form, 'data');
   });
 
 if (userPasswordForm)
