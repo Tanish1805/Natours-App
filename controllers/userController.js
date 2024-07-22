@@ -88,7 +88,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
-  console.log(req.file);
   // 2) Update the user document
   const filteredData = filterObj(req.body, 'name', 'email');
   // Till now we only allowed the name and email to be uploaded, now we will also allow the images to be uploaded

@@ -9,6 +9,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const compression = require('compression');
 
 const AppError = require('./utils/appError.js');
 const tourRouter = require('./routes/tourRoutes.js');
@@ -110,6 +111,9 @@ app.use(
     ],
   })
 );
+
+// This is going to compress all the text sent to client
+app.use(compression());
 
 // 2.) Test middleware
 app.use((req, res, next) => {
