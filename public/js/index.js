@@ -12,7 +12,7 @@ const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 
 // DELEGATION
-// Will send the locations to the mapbox
+// Will send the locations to the mapboxs
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
   displayMap(locations);

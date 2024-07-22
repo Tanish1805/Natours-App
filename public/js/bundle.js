@@ -12380,7 +12380,7 @@ var hideAlert = exports.hideAlert = function hideAlert() {
   if (el) el.parentElement.removeChild(el);
 };
 
-// type is 'success' or 'error'
+// type is 'success' or 'errors'
 var showAlert = exports.showAlert = function showAlert(type, msg) {
   hideAlert();
   var markup = "<div class=\"alert alert--".concat(type, "\">").concat(msg, "</div>");
@@ -12675,7 +12675,7 @@ var userDataForm = document.querySelector('.form-user-data');
 var userPasswordForm = document.querySelector('.form-user-password');
 
 // DELEGATION
-// Will send the locations to the mapbox
+// Will send the locations to the mapboxs
 if (mapBox) {
   var locations = JSON.parse(mapBox.dataset.locations);
   (0, _mapbox.displayMap)(locations);
