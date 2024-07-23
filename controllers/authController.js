@@ -37,7 +37,12 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create(req.body);
+  const newUser = await User.create({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    passwordConfirm: req.body.passwordConfirm,
+  });
 
   // Sending a welcome email, when user signs up
   // This url is basically the url where user can upload user photo, basically /me(See welcome template in views in emails folder)
