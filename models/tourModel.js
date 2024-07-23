@@ -185,10 +185,10 @@ tourSchema.pre(/^find/, function (next) {
 });
 
 // Here we can't use this because the query has already been executed
-tourSchema.post(/^find/, function (docs, next) {
-  console.log(`Find Query took ${Date.now() - this.start} milliseconds!`);
-  next();
-});
+// tourSchema.post(/^find/, function (docs, next) {
+//   console.log(`Find Query took ${Date.now() - this.start} milliseconds!`);
+//   next();
+// });
 
 // Let's also populate the data with guides(user) information.
 tourSchema.pre(/^find/, function (next) {
