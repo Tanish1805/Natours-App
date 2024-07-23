@@ -13,7 +13,6 @@ JWT_SECRET=<tour_jwt_secret>
 JWT_EXPIRES_IN=<jwt_token_expiry_date>
 JWT_COOKIE_EXPIRES_IN=<jwt_cookie_expiry_date>
 
-// Mailtrapper
 EMAIL_USERNAME = <your_mail_trapper_username>
 EMAIL_PASSWORD = <your_mail_trapper_password>
 EMAIL_HOST =  <your_mail_trapper_host>
