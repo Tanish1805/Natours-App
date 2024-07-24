@@ -28,3 +28,9 @@ EMAIL_HOST =  <your_mail_trapper_host>
 EMAIL_PORT =  <your_mail_trapper_prot_number>
 
 EMAIL_FROM = <your_email>
+
+
+## Available Scripts In the project directory, you can run: 
+
+### `npm i` Installs all the dependencies.
+### `npm start` Runs the app in the development mode.\ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
