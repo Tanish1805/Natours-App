@@ -49,7 +49,7 @@ module.exports = class Email {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `Tanish Chugh <${process.env.EMAIL_FROM}>`;
+    this.from = `<${process.env.EMAIL_FROM}>`;
   }
 
   // This method is to create a new transporter
@@ -58,19 +58,18 @@ module.exports = class Email {
     // Using SMTP relay and Brevo service
     // For Now BREVO-SERVICE IS NOT Working, we'll figure this out later
     // For now for production, we Will use the mailtrappper only
-    // if (process.env.NODE_ENV === 'production') {
-    //   return nodemailer.createTransport({
-    //     host: 'smtp-relay.brevo.com',
-    //     port: 587,
-    //     secure: false, // true for 465, false for other ports
-    //     auth: {
-    //       user: process.env.BREVO_LOGIN_VALUE,
-    //       pass: process.env.BREVO_SMTP_KEY,
-    //     },
-    //   });
-    // }
+    if (process.env.NODE_ENV === 'production') {
+      return nodemailer.createTransport({
+        host: process.env.BREVO_HOST,
+        port: process.env.BREVO_PORT,
+        auth: {
+          user: process.env.BREVO_LOGIN,
+          pass: process.env.BREVO_PASSWORD,
+        },
+      });
+    }
 
-    // If we are in development then simple we will send fake emails using nodemailer, instead of going into a real mail address the mails will be caught in a mailtrap inbox
+    // If we are in development then simple we will send fake emails using mail trapper, instead of going into a real mail address the mails will be caught in a mailtrap inbox
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
@@ -95,7 +94,7 @@ module.exports = class Email {
 
     // 2) Define email options
     const mailOptions = {
-      from: this.from,
+      from: `tanishchugh05@gmail.com`,
       to: this.to,
       subject,
       // We are basically sending the rendered html in the email

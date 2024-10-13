@@ -6,6 +6,7 @@ export const login = async (email, password) => {
   try {
     const res = await axios({
       method: 'POST',
+      // Frontend and backend are running ont the same origin, so the url is relative starting from /api/
       url: '/api/v1/users/login',
       data: {
         email,

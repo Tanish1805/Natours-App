@@ -15,6 +15,7 @@ const AppError = require('./utils/appError.js');
 const tourRouter = require('./routes/tourRoutes.js');
 const userRouter = require('./routes/userRoutes.js');
 const reviewRouter = require('./routes/reviewRoutes.js');
+const bookingRouter = require('./routes/bookingRoutes.js');
 const viewRouter = require('./routes/viewRoutes.js');
 const gloabalErrorHandler = require('./controllers/errorController.js');
 
@@ -128,6 +129,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
