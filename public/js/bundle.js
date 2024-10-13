@@ -64974,24 +64974,23 @@ var bookTour = exports.bookTour = /*#__PURE__*/function () {
           });
         case 3:
           session = _context.sent;
-          console.log(session);
-
+          // console.log(session);
           // 2) Create checkout form + charge credit card
           // Now this code will redirect to the checkout page
           checkoutPageUrl = session.data.session.url;
           window.location.assign(checkoutPageUrl);
-          _context.next = 13;
+          _context.next = 12;
           break;
-        case 9:
-          _context.prev = 9;
+        case 8:
+          _context.prev = 8;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
           (0, _alerts.showAlert)('error', _context.t0);
-        case 13:
+        case 12:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 9]]);
+    }, _callee, null, [[0, 8]]);
   }));
   return function bookTour(_x) {
     return _ref.apply(this, arguments);
@@ -65156,7 +65155,7 @@ if (loginForm) loginForm.addEventListener('submit', function (e) {
   e.preventDefault();
   var email = document.getElementById('email').value;
   var password = document.getElementById('password').value;
-  console.log(email);
+  // console.log(email);
   (0, _login.login)(email, password);
 });
 if (logOutBtn) logOutBtn.addEventListener('click', _login.logout);
