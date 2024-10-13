@@ -1,5 +1,6 @@
 const catchAsync = require('../utils/catchAsync');
 const Tour = require('../models/tourModel');
+const Booking = require('../models/bookingModel');
 const AppError = require('../utils/appError');
 
 exports.getOverview = catchAsync(async (req, res, next) => {
@@ -22,6 +23,8 @@ exports.getTour = catchAsync(async (req, res, next) => {
     return next(new AppError('No tour found with that name', 404));
   }
 
+  // 2) Build template
+  // 3) Render template using data from 1)
   res.status(200).render('tour', {
     title: `${tour.name} tour`,
     tour,
@@ -39,3 +42,18 @@ exports.getAccount = (req, res) => {
     title: 'Your Account',
   });
 };
+
+exports.getMyTours = catchAsync(async (req, res, next) => {
+  // 1) Find all bookings
+  const bookings = await Booking.find({ user: req.user.id });
+
+  // 2) Find tours with the returned IDs
+  const tourIDs = bookings.map((el) => el.tour);
+  const tours = await Tour.find({ _id: { $in: tourIDs } });
+
+  // 3) Rndering simply a overview page with alll the tours that the user has booked
+  res.status(200).render('overview', {
+    title: 'My Tours',
+    tours,
+  });
+});
