@@ -25,6 +25,8 @@ app.set('view engine', 'pug');
 
 app.set('views', path.join(__dirname, 'views'));
 
+app.set('trust proxy', 1); // trust the first proxy
+
 // 1) Global Middlewares:-
 
 // Serving Static files
