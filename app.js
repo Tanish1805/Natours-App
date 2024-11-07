@@ -28,53 +28,26 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('trust proxy', 1); // trust the first proxy
 
 // 1) Global Middlewares:-
+// Implement CORS
+// What is CORS, And why we need to implement it?
+// Now let's say some other website is trying to access our api, it won't be able to because by default cross origin requests are not allowed
+// So using cors, we can allow other origins to access our apps api
+// CORS Is basically just a npm package, you can see it's code yourself
+// It basically sets Access-Control-Allow-Origin *(To every request)
+app.use(cors());
+// If we just want to apply cors to a specific api, we could have simple done this app.use('/api/v1/tours', cors(), tourRouter);
+
+// Important:- Now this simple cors() works only for simple request like get, post
+// For non simple requests like put, patch, delete, browser first gives a options request to confirm that the request like delete is safe to send or not
+// So we need to send Access-Control-Allow-Origin * in the header with the response to options request to let browser knwo cross origin is allowed for delete
+// Options is just like other http methods
+app.options('*', cors());
 
 // Serving Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set Security HTTP headers
 app.use(helmet({ contentSecurityPolicy: false }));
-
-// const scriptSrcUrls = [
-//   'https://api.mapbox.com',
-//   "'self'",
-//   'blob:',
-//   'https://unpkg.com/',
-//   'https://tile.openstreetmap.org',
-// ];
-// const connectSrcUrls = [
-//   'https://unpkg.com',
-//   'https://tile.openstreetmap.org',
-//   'ws://localhost:3000/',
-//   'ws://localhost:8000/',
-//   'ws://localhost:53553/',
-//   'http://127.0.0.1:3000',
-//   'https://*.tiles.mapbox.com',
-//   'https://api.mapbox.com',
-//   'https://events.mapbox.com',
-// ];
-// const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
-
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: [],
-//       connectSrc: ["'self'", ...connectSrcUrls],
-//       scriptSrc: ["'self'", ...scriptSrcUrls],
-//       workerSrc: ["'self'", 'blob:'],
-//       objectSrc: [],
-//       imgSrc: ["'self'", 'blob:', 'data:', 'https:'],
-//       fontSrc: ["'self'", ...fontSrcUrls],
-//     },
-//   })
-// );
-
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-  })
-);
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
