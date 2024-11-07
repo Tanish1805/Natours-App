@@ -15,11 +15,11 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
 
-    // Whenever the payment is successfull ont he checkout page, the session ends and the user will automatically go to this page
+    // Whenever the payment is successfull on the checkout page, the session ends and the user will automatically go to this page
     // This method now is not secure, because anyone who knows this url could simple access the url, So anyone could simply skip the checkout process and simply open this url and book a tour
     // In production when we will use actual payments, then we can get the session id, and then we will use session id to make this secure
-    // Important Basically after the checkout session is successfull on client side, then this route './', will be hit along with some queries, So for calling the createBookingCheckout, see the view Routes, because this route is defined in the view routes, int booking routes all routes start with /api/v1/bookings....
-    // This is kind of a temporary solution only
+    // Important Basically after the checkout session is successfull on client side, the sucess url redirect to this route './', which will be hit along with some queries(This route is in view routes), So for calling the createBookingCheckout, see the view Routes, because this route is defined in the view routes
+    // This is kind of a temporary solution only, because anuone with this success url can skip the checkout process
     success_url: `${req.protocol}://${req.get('host')}/?tour=${
       req.params.tourId
     }&user=${req.user.id}&price=${tour.price}`,
