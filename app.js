@@ -16,6 +16,7 @@ const tourRouter = require('./routes/tourRoutes.js');
 const userRouter = require('./routes/userRoutes.js');
 const reviewRouter = require('./routes/reviewRoutes.js');
 const bookingRouter = require('./routes/bookingRoutes.js');
+const bookingController = require('./controllers/bookingController');
 const viewRouter = require('./routes/viewRoutes.js');
 const gloabalErrorHandler = require('./controllers/errorController.js');
 
@@ -62,9 +63,20 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+// Route to handle the posted session data from stripe after the payment is done
+// Stripe webhook url is implemented BEFORE body-parser, because stripe needs the body as stream(in raw form)
+// IMPORTANT:- This is the reason this route is implementd here and not in booking routes
+app.post(
+  '/webhook-checkout',
+  // We need to parse the body into the raw format to req.body here for stripe to implement the constructevent function in webhookCheckout in booking controller
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+);
+
+// As soon as the body hits this middleware it will be converted to simple json and it will then be put on req.body as a simple json object
+// Body parser, reading data from body to req.body
 // When we have a data larger than 10kb it will not be accepted in our body
 app.use(express.json({ limit: '10kb' }));
-
 // Parses the data from cookies
 app.use(cookieParser());
 

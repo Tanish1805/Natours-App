@@ -5,9 +5,13 @@ const bookingController = require('../controllers/bookingController');
 
 const router = express.Router();
 
+// This middleware will pickupn all the alerts and set them to res.locals, from where our pug templates will use the alerts to display on the web page using html
+// Rememmber everything set in res.locals can be used by pug templates to access
+router.use(viewsController.alerts);
+
 router.get(
   '/',
-  bookingController.createBookingCheckout,
+  // bookingController.createBookingCheckout,
   authController.isLoggedIn,
   viewsController.getOverview
 );
