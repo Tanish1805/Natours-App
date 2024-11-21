@@ -24,7 +24,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     // success_url: `${req.protocol}://${req.get('host')}/?tour=${
     //   req.params.tourId
     // }&user=${req.user.id}&price=${tour.price}`,
-    success_url: `${req.protocol}://${req.get('host')}/my-tours?alert=booking`,
+    // Important:- Now in production this session, when the chekout is completed the weebhooks we integrated in stripe will automatically send a post request to the /webhook-checkout url when the checkout is completed. The /webhook-checkout is defined in app.js route itself which will then call the webhookCheckout below to create a booking
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
     customer_email: req.user.email,
     client_reference_id: req.params.tourId,
@@ -55,6 +55,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     session,
   });
 });
+// Important:- Now in production this session, when the chekout is completed the weebhooks we integrated in stripe will automatically send a post request to the /webhook-checkout url when the checkout is completed. The /webhook-checkout is defined in app.js route itself which will then call the webhookCheckout below to create a booking
 
 // This function will actually create a booking in the database after the user has successfully checked out(Basically the checkout session ends and then the success_url will be called which will then call this function)
 // This function is getting called in the ./ route (basically see view routes)(See line 20)
@@ -79,6 +80,7 @@ const createBookingCheckout = async (session) => {
 };
 
 // Here we are implementing a real payment method using stripe for deployed website
+// Imp:- We need the req.body in raw format here, that's why we defined the web-checkout route in app.js at line 699, Route Defined in app.js itself)
 exports.webhookCheckout = (req, res, next) => {
   // Reading the stripe signature out of all headers
   const signature = req.headers['stripe-signature'];

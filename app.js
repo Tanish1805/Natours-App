@@ -63,6 +63,7 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+// Important:- Now in production when the chekout session is completed(See booking controller getCheckoutSession) the weebhooks we integrated in stripe will automatically send a post request to the /webhook-checkout url when the checkout is completed. The /webhook-checkout is defined in app.js route itself which will then call the webhookCheckout below to create a booking
 // Route to handle the posted session data from stripe after the payment is done
 // Stripe webhook url is implemented BEFORE body-parser, because stripe needs the body as stream(in raw form)
 // IMPORTANT:- This is the reason this route is implementd here and not in booking routes
